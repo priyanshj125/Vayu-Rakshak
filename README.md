@@ -139,13 +139,22 @@ Activate by entering your `OPENAI_API_KEY` in the sidebar.
 
 ---
 
-## ☁️ Azure Storage Integration
+## ☁️ Azure Storage Integration (Storage API for Judges)
 
-Vayu-Rakshak utilizes **Azure Blob Storage** for data durability and archiving, complementing the fast SQLite database used for the real-time dashboard.
+Vayu-Rakshak utilizes **Azure Blob Storage** for data durability and archiving, complementing the fast SQLite database used for the real-time dashboard. This demonstrates a complete cloud-native Storage API implementation for judges to evaluate!
 - **Hot Storage** (`vayu-hot-storage` container): Every reading sent to `/ingest` is simultaneously uploaded here.
 - **Cold Storage** (`vayu-cold-storage` container): Long-term archival. Triggered manually or via background jobs calling the `/archive` endpoint.
 
-To use this feature, simply provide your `AZURE_STORAGE_CONNECTION_STRING` in the `.env` file. The server will automatically create the containers on startup.
+### How to configure Azure Storage (For Judges)
+To test the Azure Storage Blob API without errors, you must provide your own Storage account connection string in the `.env` file. 
+1. Log into the Azure Portal and create a **Storage Account**.
+2. Navigate to your Storage Account -> **Security + networking** -> **Access keys**.
+3. Copy the **Connection string** (under Key 1 or Key 2).
+4. Extract the following format and place it into your `.env` file at the root of the project:
+   ```env
+   AZURE_STORAGE_CONNECTION_STRING="DefaultEndpointsProtocol=https;AccountName=<YOUR_ACCOUNT_NAME>;AccountKey=<YOUR_ACCOUNT_KEY>;EndpointSuffix=core.windows.net"
+   ```
+The server will automatically create the containers and begin routing the API requests to your storage account on startup.
 
 ---
 
